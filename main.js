@@ -50,4 +50,4 @@ async function maintainWorkers(totalWorkers) {
 }
 
 // Inicia o gerenciamento dos workers
-maintainWorkers(20);
+maintainWorkers(1);
