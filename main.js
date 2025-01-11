@@ -181,14 +181,6 @@ try {
     console.error('Erro ao acessar a URL da API:', error);
 }
 
-// Atualiza a página
-console.log('Atualizando a página...');
-try {
-    await page.reload({ waitUntil: 'networkidle0', timeout: 999999 }); // Usa as mesmas configurações para recarregar a página
-} catch (error) {
-    console.error('Erro ao atualizar a página:', error);
-}
-
 // Função para adicionar uma pausa
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
