@@ -172,7 +172,7 @@ const __dirname = path.dirname(__filename);
                         console.log(`sec_user_id capturado: ${secUserId}`);
 
         const apiUrlWithSecUid = `https://www.tiktok.com/api/user/list/?WebIdLastTime=1735858074&aid=1988&app_language=pt-BR&app_name=tiktok_web&browser_language=pt-BR&browser_name=Mozilla&browser_online=true&browser_platform=Win32&browser_version=5.0%20%28Windows%20NT%2010.0%3B%20Win64%3B%20x64%29%20AppleWebKit%2F537.36%20%28KHTML%2C%20like%20Gecko%29%20Chrome%2F131.0.0.0%20Safari%2F537.36&channel=tiktok_web&cookie_enabled=true&count=30&data_collection_enabled=true&device_id=7455453607727662598&device_platform=web_pc&focus_state=true&from_page=user&history_len=3&is_fullscreen=false&is_page_visible=true&maxCursor=0&minCursor=0&odinId=7456514841726583814&os=windows&priority_region=BR&referer=&region=BR&scene=67&screen_height=768&screen_width=1366&secUid=${secUserId}&tz_name=America%2FSao_Paulo&user_is_login=true&verifyFp=verify_m5lie4tj_Api59hbm_UKCY_4wMf_AvM7_AGPeWeEjacWi&webcast_language=pt-BR&msToken=VPInQ-Fg-DG8zjtysbOfK8dbrrLw9UNia83WHJdlWEd8HhDjM4NAuqElxgVIIwjcCVB3JzRfBqqmlPyRLtZ0jvjSk3RpLiNyDXqBBSOBTNTS-BWlleK3kuIdBTqyDRoX5_5x_nhiQJihmhEnfBQlTkc8rv9k&X-Bogus=DFSzswVY1yzANjact8iNfWhPmk3H&_signature=_02B4Z6wo000018yHpKAAAIDDv1rmATHi4fPMh6AAAJRm6b`;
-    
+
 // Acessa a URL da API no navegador
 console.log('Acessando a URL da API no navegador...');
 try {
@@ -188,23 +188,31 @@ try {
 } catch (error) {
     console.error('Erro ao atualizar a página:', error);
 }
-                // Captura todos os uniqueId presentes na resposta
-                const apiPageContent = await page.content();
-                const uniqueIdRegex = /"uniqueId":"(.*?)"/g;
-                const uniqueIds = [];
-    
-                let match;
-                while ((match = uniqueIdRegex.exec(apiPageContent)) !== null) {
-                    uniqueIds.push(match[1]);
-                }
-    
-                if (uniqueIds.length > 0) {
-                    console.log(`uniqueIds capturados: ${uniqueIds.join(', ')}`);
-    
-                    // Seleciona um uniqueId aleatório
-                    const randomIndex = Math.floor(Math.random() * uniqueIds.length);
-                    const randomUniqueId = uniqueIds[randomIndex];
-                    console.log(`uniqueId selecionado aleatoriamente: ${randomUniqueId}`);
+
+// Função para adicionar uma pausa
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+// Aguarda 10 segundos após a atualização da página
+console.log('Aguardando 10 segundos...');
+await sleep(10000); // 10 segundos em milissegundos
+
+// Captura todos os uniqueId presentes na resposta
+const apiPageContent = await page.content();
+const uniqueIdRegex = /"uniqueId":"(.*?)"/g;
+const uniqueIds = [];
+
+let match;
+while ((match = uniqueIdRegex.exec(apiPageContent)) !== null) {
+    uniqueIds.push(match[1]);
+}
+
+if (uniqueIds.length > 0) {
+    console.log(`uniqueIds capturados: ${uniqueIds.join(', ')}`);
+
+    // Seleciona um uniqueId aleatório
+    const randomIndex = Math.floor(Math.random() * uniqueIds.length);
+    const randomUniqueId = uniqueIds[randomIndex];
+    console.log(`uniqueId selecionado aleatoriamente: ${randomUniqueId}`);
 
                          // Acessar a URL "adicionar_conta" antes de continuar o fluxo
                          console.log('Acessando a página de adicionar conta...');
