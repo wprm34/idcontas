@@ -65,7 +65,7 @@ const __dirname = path.dirname(__filename);
                 try {
                     // Navega para a URL com configurações de espera e um tempo limite aumentado
                     await page.goto(url, {
-                        waitUntil: 'domcontentloaded', // Espera até que o DOM seja carregado
+                        waitUntil: 'load', // Espera até que o DOM seja carregado
                         timeout: 999999, // Aumenta o tempo limite para 60 segundos
                     });
                     console.log('Página carregada com sucesso.');
