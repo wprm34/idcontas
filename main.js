@@ -20,11 +20,11 @@ const __dirname = path.dirname(__filename);
     let browser;
 
     try {
-
-const browser = await chromium.launch({
-  headless: process.env.CI ? true : false  // No CI, headless é true
-});
-
+        // Iniciar o navegador sem depuração remota
+        const browser = await chromium.launch({
+            headless: process.env.CI ? true : false  // No CI, headless é true
+          });
+          
 
         const context = await browser.newContext({
             viewport: null, // Remove o limite padrão de viewport
@@ -58,6 +58,9 @@ const browser = await chromium.launch({
         try {
         
                 const url = 'https://www.ganharnasredes.com/painel/?pagina=gerenciar_contas';
+                page.on('console', msg => console.log('Console message:', msg.text()));
+                page.on('error', err => console.error('Page error:', err));
+
 
                 try {
                     // Navega para a URL com configurações de espera e um tempo limite aumentado
