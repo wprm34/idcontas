@@ -29,7 +29,7 @@ jobs:
           mkdir novo-projeto
           cd novo-projeto
           npm init -y
-          echo '{"type": "module"}' >> package.json
+          jq '. + {"type": "module"}' package.json > tmp.json && mv tmp.json package.json
 
       # Copia o arquivo main.js para o novo diretório
       - name: Copy main.js to novo-projeto
