@@ -1,4 +1,4 @@
-name: Set Up Node.js Project with Playwright
+name: Run Worker Threads with Playwright
 
 on:
   push:
@@ -9,69 +9,28 @@ on:
       - main
 
 jobs:
-  setup-playwright:
+  run-workers:
     runs-on: ubuntu-latest
 
     steps:
+      # Checkout do código
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # Configura o Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20'
 
-      - name: Create project directory and initialize npm
-        run: |
-          mkdir novo-projeto
-          cd novo-projeto
-          npm init -y
-          jq '. + {"type": "module"}' package.json > tmp.json && mv tmp.json package.json || echo '{"type": "module"}' > package.json
+      # Instala as dependências
+      - name: Install dependencies
+        run: npm install
 
-      - name: Copy main.js to novo-projeto
-        run: |
-          cp main.js novo-projeto/
+      # Instala os navegadores Playwright
+      - name: Install Playwright browsers
+        run: npx playwright install
 
-      - name: Rename main.js to main.mjs
-        run: |
-          mv novo-projeto/main.js novo-projeto/main.mjs
-
-      - name: Install Playwright
-        run: |
-          cd novo-projeto
-          npm install playwright
-
-      - name: Install Playwright system dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            libwoff1 \
-            libvpx9 \
-            libevent-2.1-7t64 \
-            libopus0 \
-            libgstreamer-plugins-base1.0-0 \
-            libgstreamer-gl1.0-0 \
-            libgstreamer-plugins-bad1.0-0 \
-            libflite1 \
-            libavif16 \
-            libharfbuzz-icu0 \
-            libsecret-1-0 \
-            libhyphen0 \
-            libmanette-0.2-0 \
-            libgles2 \
-            gstreamer1.0-libav
-
-      - name: Install Axios and Node-Fetch
-        run: |
-          cd novo-projeto
-          npm install axios node-fetch
-
-      - name: Install Playwright Browsers
-        run: |
-          cd novo-projeto
-          npx playwright install
-
-      - name: Run script with Playwright (headed)
-        run: |
-          cd novo-projeto
-          xvfb-run --auto-servernum -- node main.mjs
+      # Executa o script com xvfb-run
+      - name: Run script with xvfb
+        run: xvfb-run --auto-servernum -- node main.js
