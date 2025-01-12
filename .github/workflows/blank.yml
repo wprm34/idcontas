@@ -32,10 +32,6 @@ jobs:
         run: |
           cp main.js novo-projeto/
 
-      - name: Rename main.js to main.mjs
-        run: |
-          mv novo-projeto/main.js novo-projeto/main.mjs
-
       - name: Install Playwright
         run: |
           cd novo-projeto
