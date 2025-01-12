@@ -13,17 +13,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout do código
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Configura o Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20'
 
-      # Cria o diretório novo-projeto e inicializa npm
       - name: Create project directory and initialize npm
         run: |
           mkdir novo-projeto
@@ -31,41 +28,29 @@ jobs:
           npm init -y
           jq '. + {"type": "module"}' package.json > tmp.json && mv tmp.json package.json
 
-      # Copia o arquivo main.js para o novo diretório
       - name: Copy main.js to novo-projeto
         run: |
           cp main.js novo-projeto/
 
-      # Renomeia main.js para main.mjs
       - name: Rename main.js to main.mjs
         run: |
           mv novo-projeto/main.js novo-projeto/main.mjs
 
-      # Instala o Playwright
       - name: Install Playwright
         run: |
           cd novo-projeto
           npm install playwright
 
-      # Instala as dependências do sistema para o Playwright
       - name: Install Playwright system dependencies
         run: |
           sudo npx playwright install-deps
 
-      # Instala os navegadores necessários do Playwright
-      - name: Install Playwright browsers
-        run: |
-          cd novo-projeto
-          npx playwright install
-
-      # Instala Axios e Node-Fetch
       - name: Install Axios and Node-Fetch
         run: |
           cd novo-projeto
           npm install axios node-fetch
 
-      # Executa o script com Playwright no modo headless
-      - name: Run script with Playwright (headless)
+      - name: Run script with Playwright (headed)
         run: |
           cd novo-projeto
-          node main.mjs
+          xvfb-run --auto-servernum -- node main.mjs
