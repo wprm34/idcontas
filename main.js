@@ -20,10 +20,11 @@ const __dirname = path.dirname(__filename);
     let browser;
 
     try {
-        // Iniciar o navegador sem depuração remota
-        browser = await chromium.launch({
-            headless: false, // Define como `true` se quiser rodar em modo headless
-        });
+
+const browser = await chromium.launch({
+  headless: process.env.CI ? true : false  // No CI, headless é true
+});
+
 
         const context = await browser.newContext({
             viewport: null, // Remove o limite padrão de viewport
