@@ -1,4 +1,4 @@
-name: Run Worker Threads with Playwright
+name: Set Up Node.js Project with Puppeteer
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  run-workers:
+  setup-puppeteer:
     runs-on: ubuntu-latest
 
     steps:
@@ -23,18 +23,21 @@ jobs:
         with:
           node-version: '20'
 
-      # Instala as dependências
-      - name: Install dependencies
-        run: npm install
+      # Cria o diretório novo-projeto e inicializa o npm
+      - name: Create project directory and initialize npm
+        run: |
+          mkdir novo-projeto
+          cd novo-projeto
+          npm init -y
 
-      # Instala os navegadores Playwright
-      - name: Install Playwright browsers
-        run: npx playwright install
+      # Instala o Puppeteer
+      - name: Install Puppeteer
+        run: |
+          cd novo-projeto
+          npm install puppeteer
 
-      # Instala o xvfb (caso não esteja instalado por padrão)
-      - name: Install xvfb
-        run: sudo apt-get update && sudo apt-get install -y xvfb
-
-      # Executa o script com xvfb
-      - name: Run script with xvfb
-        run: xvfb-run --auto-servernum -- node main.js
+      # Executa o script ou comandos adicionais
+      - name: Run script with Puppeteer
+        run: |
+          cd novo-projeto
+          node main.js
