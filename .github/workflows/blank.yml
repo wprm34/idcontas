@@ -58,14 +58,14 @@ jobs:
           cd novo-projeto
           npx playwright install
 
+      # Instala o Axios
+      - name: Install Axios
+        run: |
+          cd novo-projeto
+          npm install axios
+
       # Executa o script com Playwright no modo headless
       - name: Run script with Playwright (headless)
         run: |
           cd novo-projeto
           node main.mjs
-
-      # (Opcional) Executa o script com Playwright usando xvfb-run (não-headless)
-      - name: Run script with Playwright using xvfb
-        run: |
-          cd novo-projeto
-          xvfb-run --auto-servernum -- node main.mjs
