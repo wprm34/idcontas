@@ -50,6 +50,11 @@ jobs:
           cd novo-projeto
           npm install axios node-fetch
 
+      - name: Install Playwright Browsers
+        run: |
+          cd novo-projeto
+          npx playwright install
+
       - name: Run script with Playwright (headed)
         run: |
           cd novo-projeto
