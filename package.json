@@ -1,7 +1,6 @@
 {
 
   "dependencies": {
-    "type": "module",
 
     "axios": "^1.7.9",
 
