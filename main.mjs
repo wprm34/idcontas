@@ -15,7 +15,7 @@ const __dirname = path.dirname(__filename);
     const totalIteracoes = 99999; // Número total de iterações
 
     const cookiesDir = path.resolve(__dirname, 'cookies gnr');
-    const cookiesFile = path.join(cookiesDir, '2e26eb3d-f55a-43db-bd25-d57f03287cab.json');
+    const cookiesFile = path.join(cookiesDir, 'cookies.json');
 
     let currentUrl; // Variável para armazenar a URL capturada do TikTok
     let browser;
