@@ -27,16 +27,14 @@ const headers = {
 // Requisição usando fetch
 fetch(url, { method: "GET", headers })
   .then((response) => {
-    if (!response.ok) {
-      throw new Error(`Erro HTTP: ${response.status}`);
-    }
-    return response.text(); // Use text() para ver o conteúdo da resposta
+    console.log(`Status da resposta: ${response.status}`); // Verifica o status
+    return response.text(); // Loga a resposta como texto
   })
   .then((text) => {
-    console.log(text); // Exibe o corpo da resposta
+    console.log("Corpo da resposta:", text); // Loga o corpo da resposta
     try {
-      const data = JSON.parse(text); // Tenta parsear o JSON manualmente
-      // Extração de dados e lógica aqui...
+      const data = JSON.parse(text); // Tenta fazer o parse manualmente
+      // Lógica com os dados
     } catch (error) {
       console.error("Erro ao parsear JSON:", error);
     }
@@ -44,4 +42,5 @@ fetch(url, { method: "GET", headers })
   .catch((error) => {
     console.error("Erro na requisição:", error);
   });
+
 
