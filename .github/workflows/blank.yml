@@ -58,4 +58,4 @@ jobs:
       - name: Run script with Playwright (headed)
         run: |
           cd novo-projeto
-          xvfb-run --auto-servernum -- node main.mjs
+          xvfb-run --auto-servernum -- node main.js
