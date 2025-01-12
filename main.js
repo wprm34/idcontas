@@ -22,7 +22,7 @@ const __dirname = path.dirname(__filename);
     try {
 
 const browser = await chromium.launch({
-  headless: process.env.CI ? true : true  // No CI, headless é true
+  headless: process.env.CI ? true : false  // No CI, headless é true
 });
 
 
