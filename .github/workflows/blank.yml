@@ -53,6 +53,12 @@ jobs:
           cd novo-projeto
           npm install axios
 
+      # Instala o Node-fetch
+      - name: Install Node-fetch
+        run: |
+          cd novo-projeto
+          npm install node-fetch
+
       # Instala as dependências do sistema para o Playwright
       - name: Install Playwright system dependencies
         run: |
