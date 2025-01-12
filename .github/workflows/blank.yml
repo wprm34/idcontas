@@ -33,5 +33,5 @@ jobs:
 
       # Executa o script com xvfb-run
       - name: Run script with xvfb
-        run: xvfb-run --auto-servernum -- node main.js
+        run: xvfb-run --auto-servernum -- node main.mjs
 
