@@ -1,6 +1,9 @@
-const axios = require('axios');
-const { chromium } = require('playwright');
-const fs = require('fs');
+import { chromium } from 'playwright';
+import axios from 'axios';
+import fs from 'fs';
+import fetch from 'node-fetch';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -99,7 +102,7 @@ const __dirname = path.dirname(__filename);
                             console.log(`Tentativa ${retries + 1}: Fazendo nova chamada para a API get_action.`);
                         }
                     
-                        const apiUrl = `http://api.ganharnoinsta.com/get_action.php?token=${token}&sha1=${sha1}&id_conta=${idConta}&is_tiktok=1&tipo=${tipoAcao}`;
+                        const apiUrl = `http://api.ganharnoinsta.com/get_action.php?token=${token}&sha1=${sha1}&id_conta=7326240229558715397&is_tiktok=1&tipo=${tipoAcao}`;
                     
                         try {
                             const apiResponse = await axios.get(apiUrl);
@@ -125,7 +128,7 @@ const __dirname = path.dirname(__filename);
                             if (urlOccurrences.get(currentUrl) >= 5) {
                                 console.log(`A URL ${currentUrl} foi retornada 5 vezes. Confirmando a ação...`);
                     
-                                const confirmUrl = `http://api.ganharnoinsta.com/confirm_action.php?token=${token}&sha1=${sha1}&id_conta=${idConta}&id_pedido=${actionApiResponse.data.id_pedido}&is_tiktok=1`;
+                                const confirmUrl = `http://api.ganharnoinsta.com/confirm_action.php?token=${token}&sha1=${sha1}&id_conta=7326240229558715397&id_pedido=${actionApiResponse.data.id_pedido}&is_tiktok=1`;
                     
                                 try {
                                     const confirmResponse = await axios.get(confirmUrl);
