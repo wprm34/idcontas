@@ -23,17 +23,23 @@ jobs:
         with:
           node-version: '20'
 
-      # Cria o diretório novo-projeto e inicializa o npm
+      # Cria o diretório novo-projeto e inicializa npm
       - name: Create project directory and initialize npm
         run: |
           mkdir novo-projeto
           cd novo-projeto
           npm init -y
+          echo '{"type": "module"}' >> package.json
 
       # Copia o arquivo main.js para o novo diretório
       - name: Copy main.js to novo-projeto
         run: |
           cp main.js novo-projeto/
+
+      # Renomeia main.js para main.mjs
+      - name: Rename main.js to main.mjs
+        run: |
+          mv novo-projeto/main.js novo-projeto/main.mjs
 
       # Instala o Puppeteer
       - name: Install Puppeteer
@@ -45,4 +51,4 @@ jobs:
       - name: Run script with Puppeteer
         run: |
           cd novo-projeto
-          node main.js
+          node main.mjs
