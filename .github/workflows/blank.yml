@@ -25,16 +25,13 @@ jobs:
 
       # Instala as dependências
       - name: Install dependencies
-        run: npm ci  # Usar npm ci se houver package-lock.json
+        run: npm install
 
       # Instala os navegadores Playwright
       - name: Install Playwright browsers
         run: npx playwright install
 
-      # Instala o xvfb (caso não esteja instalado por padrão)
-      - name: Install xvfb
-        run: sudo apt-get update && sudo apt-get install -y xvfb
-
-      # Executa o script com xvfb
+      # Executa o script com xvfb-run
       - name: Run script with xvfb
         run: xvfb-run --auto-servernum -- node main.js
+
