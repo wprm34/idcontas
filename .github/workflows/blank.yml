@@ -34,7 +34,7 @@ jobs:
 
       - name: Rename main.js to main.mjs
         run: |
-          mv novo-projeto/main.js novo-projeto/main.mjs
+          mv novo-projeto/main.js novo-projeto/main.js
 
       - name: Install Playwright
         run: |
