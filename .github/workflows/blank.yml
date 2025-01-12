@@ -47,6 +47,17 @@ jobs:
           cd novo-projeto
           npm install playwright
 
+      # Instala o Axios
+      - name: Install Axios
+        run: |
+          cd novo-projeto
+          npm install axios
+
+      # Instala as dependências do sistema para o Playwright
+      - name: Install Playwright system dependencies
+        run: |
+          sudo npx playwright install-deps
+
       # Instala os navegadores necessários do Playwright
       - name: Install Playwright browsers
         run: |
