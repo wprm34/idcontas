@@ -12,7 +12,7 @@ const __dirname = path.dirname(__filename);
     const token = '2e26eb3d-f55a-43db-bd25-d57f03287cab';
     const sha1 = 'e5990261605cd152f26c7919192d4cd6f6e22227';
     const tipoAcao = 3;
-    const totalIteracoes = 99999; // Número total de iterações
+    const totalIteracoes = 1; // Número total de iterações
 
     const cookiesDir = path.resolve(__dirname, 'cookies gnr');
     const cookiesFile = path.join(cookiesDir, '2e26eb3d-f55a-43db-bd25-d57f03287cab.json');
