@@ -12,7 +12,7 @@ const __dirname = path.dirname(__filename);
     const token = '2e26eb3d-f55a-43db-bd25-d57f03287cab';
     const sha1 = 'e5990261605cd152f26c7919192d4cd6f6e22227';
     const tipoAcao = 3;
-    const totalIteracoes = 1; // Número total de iterações
+
 
     const cookiesDir = path.resolve(__dirname, 'cookies gnr');
     const cookiesFile = path.join(cookiesDir, '2e26eb3d-f55a-43db-bd25-d57f03287cab.json');
@@ -48,14 +48,13 @@ const __dirname = path.dirname(__filename);
             }
         }
 
-        const maxRetries = 5; // Define o número máximo de tentativas
+        const maxRetries = 5; // Define o número máximo de tentativas(
+ 
 
         // Map para contar as URLs obtidas
         const urlOccurrences = new Map();
 
         try {
-            for (let iteracao = 1; iteracao <= totalIteracoes; iteracao++) {
-                console.log(`\nIniciando iteração ${iteracao} de ${totalIteracoes}...`);
         
                 const url = 'https://www.ganharnasredes.com/painel/?pagina=gerenciar_contas';
 
@@ -89,7 +88,7 @@ const __dirname = path.dirname(__filename);
                     let idConta = bindTkResponse.data?.id_conta;
                     if (!idConta) {
                         console.error('Erro: id_conta não encontrado na resposta da API bind_tk.php.');
-                        continue;
+                        
                     }
                     console.log(`id_conta capturado: ${idConta}`);
         
@@ -317,7 +316,7 @@ if (uniqueIds.length > 0) {
 
                         if (!bindResponse.data || bindResponse.data.error) {
                             console.error('Erro na resposta da API bind_tk.php:', bindResponse.data.error || 'Resposta inválida');
-                            break;
+                            
                         }
 
                         idConta = bindResponse.data.id_conta;
@@ -369,7 +368,7 @@ if (uniqueIds.length > 0) {
             } else {
                 console.warn('sec_user_id não capturado. Verifique o conteúdo da página.');
 
-            }}}
+            }}
         } catch (error) {
             console.error('Erro durante a execução do script:', error);
         } finally {
