@@ -1,4 +1,4 @@
-name: Set Up Node.js Project with Puppeteer
+name: Set Up Node.js Project with Playwright
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  setup-puppeteer:
+  setup-playwright:
     runs-on: ubuntu-latest
 
     steps:
@@ -41,14 +41,20 @@ jobs:
         run: |
           mv novo-projeto/main.js novo-projeto/main.mjs
 
-      # Instala o Puppeteer
-      - name: Install Puppeteer
+      # Instala o Playwright
+      - name: Install Playwright
         run: |
           cd novo-projeto
-          npm install puppeteer
+          npm install playwright
 
-      # Executa o script com Puppeteer
-      - name: Run script with Puppeteer
+      # Instala os navegadores necessários do Playwright
+      - name: Install Playwright browsers
+        run: |
+          cd novo-projeto
+          npx playwright install
+
+      # Executa o script com Playwright
+      - name: Run script with Playwright
         run: |
           cd novo-projeto
           node main.mjs
