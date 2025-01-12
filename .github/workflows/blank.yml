@@ -47,18 +47,6 @@ jobs:
           cd novo-projeto
           npm install playwright
 
-      # Instala o Axios
-      - name: Install Axios
-        run: |
-          cd novo-projeto
-          npm install axios
-
-      # Instala o Node-fetch
-      - name: Install Node-fetch
-        run: |
-          cd novo-projeto
-          npm install node-fetch
-
       # Instala as dependências do sistema para o Playwright
       - name: Install Playwright system dependencies
         run: |
@@ -70,8 +58,14 @@ jobs:
           cd novo-projeto
           npx playwright install
 
-      # Executa o script com Playwright
-      - name: Run script with Playwright
+      # Executa o script com Playwright no modo headless
+      - name: Run script with Playwright (headless)
         run: |
           cd novo-projeto
           node main.mjs
+
+      # (Opcional) Executa o script com Playwright usando xvfb-run (não-headless)
+      - name: Run script with Playwright using xvfb
+        run: |
+          cd novo-projeto
+          xvfb-run --auto-servernum -- node main.mjs
