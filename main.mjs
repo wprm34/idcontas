@@ -25,16 +25,18 @@ const headers = {
 };
 
 // Requisição usando fetch
-fetch("https://jsonplaceholder.typicode.com/posts")
+fetch(url, { method: "GET", headers })
   .then((response) => {
-    console.log("Status da resposta:", response.status);
-    return response.text(); // Verifica a resposta como texto
+    if (!response.ok) {
+      throw new Error(`Erro HTTP: ${response.status}`);
+    }
+    return response.text(); // Use text() para ver o conteúdo da resposta
   })
   .then((text) => {
-    console.log("Corpo da resposta:", text);
+    console.log(text); // Exibe o corpo da resposta
     try {
-      const data = JSON.parse(text); // Tenta fazer o parse manualmente
-      console.log(data);
+      const data = JSON.parse(text); // Tenta parsear o JSON manualmente
+      // Extração de dados e lógica aqui...
     } catch (error) {
       console.error("Erro ao parsear JSON:", error);
     }
@@ -42,6 +44,4 @@ fetch("https://jsonplaceholder.typicode.com/posts")
   .catch((error) => {
     console.error("Erro na requisição:", error);
   });
-
-
 
