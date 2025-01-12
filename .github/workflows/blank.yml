@@ -25,7 +25,7 @@ jobs:
 
       # Instala as dependências
       - name: Install dependencies
-        run: npm ci  # Usar npm ci se houver package-lock.json
+        run: npm install
 
       # Instala os navegadores Playwright
       - name: Install Playwright browsers
