@@ -26,23 +26,22 @@ const headers = {
 
 // Requisição usando fetch
 fetch(url, { method: "GET", headers })
-  .then((response) => response.json()) // Parsear como JSON
-  .then((data) => {
-    // Extrair a lista de usuários
-    const userList = data?.userList || [];
-
-    // Extrair os uniqueIds
-    const uniqueIds = userList
-      .map((item) => item.user?.uniqueId) // Extrai o campo uniqueId de cada usuário
-      .filter(Boolean); // Filtra valores inválidos
-
-    // Selecionar e exibir um uniqueId aleatório
-    if (uniqueIds.length > 0) {
-      const randomUniqueId =
-        uniqueIds[Math.floor(Math.random() * uniqueIds.length)];
-      console.log(randomUniqueId); // Exibe apenas o uniqueId selecionado
+  .then((response) => {
+    if (!response.ok) {
+      throw new Error(`Erro HTTP: ${response.status}`);
+    }
+    return response.text(); // Use text() para ver o conteúdo da resposta
+  })
+  .then((text) => {
+    console.log(text); // Exibe o corpo da resposta
+    try {
+      const data = JSON.parse(text); // Tenta parsear o JSON manualmente
+      // Extração de dados e lógica aqui...
+    } catch (error) {
+      console.error("Erro ao parsear JSON:", error);
     }
   })
   .catch((error) => {
     console.error("Erro na requisição:", error);
   });
+
