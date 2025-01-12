@@ -30,13 +30,18 @@ jobs:
           cd novo-projeto
           npm init -y
 
+      # Copia o arquivo main.js para o novo diretório
+      - name: Copy main.js to novo-projeto
+        run: |
+          cp main.js novo-projeto/
+
       # Instala o Puppeteer
       - name: Install Puppeteer
         run: |
           cd novo-projeto
           npm install puppeteer
 
-      # Executa o script ou comandos adicionais
+      # Executa o script com Puppeteer
       - name: Run script with Puppeteer
         run: |
           cd novo-projeto
