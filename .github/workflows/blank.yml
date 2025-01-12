@@ -1,4 +1,4 @@
-name: Run Worker Threads with Playwright
+name: Run Worker Threads
 
 on:
   push:
@@ -21,16 +21,15 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20'
+          node-version: '20' # Altere para a versão necessária
 
-      # Instala as dependências
+      # Instala as dependências (se houver um package.json)
       - name: Install dependencies
-        run: npm install
+        run: |
+          if [ -f package.json ]; then
+            npm install
+          fi
 
-      # Instala os navegadores Playwright
-      - name: Install Playwright browsers
-        run: npx playwright install
-
-      # Executa o script com xvfb-run
-      - name: Run script with xvfb
-        run: xvfb-run --auto-servernum -- node main.js
+      # Executa o script principal
+      - name: Run main script
+        run: node main.js
