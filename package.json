@@ -1,10 +1,20 @@
 {
-  "type": "module",
+
   "dependencies": {
+    "type": "module",
+
     "axios": "^1.7.9",
+
+    "node-fetch": "^3.3.2",
+
     "playwright": "^1.49.1"
+
   },
+
   "devDependencies": {
+
     "prettier": "3.4.2"
+
   }
+
 }
