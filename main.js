@@ -1,7 +1,6 @@
 import { chromium } from 'playwright';
 import axios from 'axios';
 import fs from 'fs';
-import fetch from 'node-fetch';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
