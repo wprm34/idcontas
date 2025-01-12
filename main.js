@@ -22,7 +22,7 @@ const __dirname = path.dirname(__filename);
     try {
         // Iniciar o navegador sem depuração remota
         browser = await chromium.launch({
-            headless: true, // Define como `true` se quiser rodar em modo headless
+            headless: false, // Define como `true` se quiser rodar em modo headless
         });
 
         const context = await browser.newContext({
