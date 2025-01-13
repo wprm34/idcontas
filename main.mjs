@@ -1,7 +1,5 @@
 import { chromium } from 'playwright';
-import axios from 'axios';
 import fs from 'fs';
-import fetch from 'node-fetch';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -15,7 +13,7 @@ const __dirname = path.dirname(__filename);
     let browser;
 
     try {
-        // Iniciar o navegador localmente, sem depuração remota
+        // Iniciar o navegador localmente
         browser = await chromium.launch({
             headless: false, // Define como `true` se quiser rodar em modo headless
         });
@@ -24,9 +22,16 @@ const __dirname = path.dirname(__filename);
         return;
     }
 
+    // Simular localização e idioma do Brasil
     const context = await browser.newContext({
         viewport: null, // Remove o limite padrão de viewport
-        userAgent: 'Mozilla/5.0 ...', // Substitua com o userAgent desejado
+        userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
+        locale: 'pt-BR',
+        geolocation: {
+            latitude: -14.2350, // Latitude do Brasil
+            longitude: -51.9253, // Longitude do Brasil
+        },
+        permissions: ['geolocation'], // Permitir acesso à geolocalização
     });
 
     const page = await context.newPage();
@@ -54,14 +59,14 @@ const __dirname = path.dirname(__filename);
     // Esperando até a página carregar
     await page.waitForSelector('body');
 
-    // Função para tentar capturar a resposta da API até 100 vezes
+    // Função para capturar a resposta da API
     async function captureApiResponse(retryCount = 0) {
         if (retryCount >= 100) {
             console.log('Número máximo de tentativas atingido.');
             return;
         }
 
-        // Capturar a requisição da API que contém a lista de usuários
+        let uniqueIds = [];
         page.on('response', async response => {
             const apiUrl = response.url();
             if (apiUrl.includes('/api/user/list/')) {
@@ -71,9 +76,16 @@ const __dirname = path.dirname(__filename);
                     console.log(`Resposta completa da API:`, JSON.stringify(jsonResponse, null, 2));
 
                     // Captura todos os uniqueId dos usuários na resposta
-                    const uniqueIds = jsonResponse?.userList?.map(user => user.user?.uniqueId);
-                    if (uniqueIds && uniqueIds.length > 0) {
+                    uniqueIds = jsonResponse?.userList?.map(user => user.user?.uniqueId) || [];
+                    if (uniqueIds.length > 0) {
                         console.log(`Unique IDs capturados:`, uniqueIds);
+
+                        // Seleciona um uniqueId aleatório
+                        const randomUniqueId = uniqueIds[Math.floor(Math.random() * uniqueIds.length)];
+                        console.log(`Unique ID selecionado aleatoriamente: ${randomUniqueId}`);
+
+                        // Encerrar o navegador após encontrar um uniqueId
+                        await browser.close();
                         return;
                     } else {
                         console.log('Nenhum uniqueId encontrado na resposta.');
@@ -86,10 +98,12 @@ const __dirname = path.dirname(__filename);
 
         // Aguardar um pouco antes de tentar novamente (se necessário)
         console.log(`Tentativa ${retryCount + 1} de capturar a resposta da API...`);
-        await page.waitForTimeout(0); // Aguardar 3 segundos antes de tentar novamente
+        await page.waitForTimeout(3000); // Aguardar 3 segundos antes de tentar novamente
 
-        // Tentar mais uma vez
-        captureApiResponse(retryCount + 1);
+        // Se não capturar uniqueIds, tentar novamente
+        if (uniqueIds.length === 0) {
+            captureApiResponse(retryCount + 1);
+        }
     }
 
     // Iniciar a captura da resposta da API
