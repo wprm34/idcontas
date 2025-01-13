@@ -45,7 +45,7 @@ const __dirname = path.dirname(__filename);
         }
     }
 
-    const url = 'https://www.tiktok.com/@gkzx7_';
+    const url = 'https://www.tiktok.com/@musicaslc.oficial';
     console.log(`Acessando a URL: ${url}`);
 
     // Função para tentar capturar a resposta da API até 100 vezes
