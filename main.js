@@ -17,7 +17,7 @@ const __dirname = path.dirname(__filename);
     try {
         // Iniciar o navegador localmente, sem depuração remota
         browser = await chromium.launch({
-            headless: false, // Define como `true` se quiser rodar em modo headless
+            headless: true, // Define como `true` se quiser rodar em modo headless
         });
     } catch (error) {
         console.error('Erro ao iniciar o navegador:', error);
