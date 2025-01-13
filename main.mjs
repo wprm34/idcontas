@@ -92,7 +92,7 @@ const __dirname = path.dirname(__filename);
 
         // Aguardar um pouco antes de tentar novamente (se necessário)
         console.log(`Tentativa ${retryCount + 1} de capturar a resposta da API...`);
-        await page.waitForTimeout(100); // Aguardar 3 segundos antes de tentar novamente
+        await page.waitForTimeout(10000); // Aguardar 3 segundos antes de tentar novamente
 
         // Se não capturar uniqueIds, tentar novamente
         if (uniqueIds.length === 0) {
