@@ -86,7 +86,7 @@ const __dirname = path.dirname(__filename);
 
         // Aguardar um pouco antes de tentar novamente (se necessário)
         console.log(`Tentativa ${retryCount + 1} de capturar a resposta da API...`);
-        await page.waitForTimeout(300); // Aguardar 3 segundos antes de tentar novamente
+        await page.waitForTimeout(0); // Aguardar 3 segundos antes de tentar novamente
 
         // Tentar mais uma vez
         captureApiResponse(retryCount + 1);
