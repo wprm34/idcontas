@@ -56,7 +56,7 @@ const __dirname = path.dirname(__filename);
 
     // Função para tentar capturar a resposta da API até 100 vezes
     async function captureApiResponse(retryCount = 0) {
-        if (retryCount >= 100) {
+        if (retryCount >= 1) {
             console.log('Número máximo de tentativas atingido.');
             return;
         }
