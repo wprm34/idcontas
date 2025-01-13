@@ -1,5 +1,7 @@
 import { chromium } from 'playwright';
+import axios from 'axios';
 import fs from 'fs';
+import fetch from 'node-fetch';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -60,7 +62,6 @@ const __dirname = path.dirname(__filename);
         }
 
         // Capturar a requisição da API que contém a lista de usuários
-        let uniqueIds = [];
         page.on('response', async response => {
             const apiUrl = response.url();
             if (apiUrl.includes('/api/user/list/')) {
@@ -70,16 +71,9 @@ const __dirname = path.dirname(__filename);
                     console.log(`Resposta completa da API:`, JSON.stringify(jsonResponse, null, 2));
 
                     // Captura todos os uniqueId dos usuários na resposta
-                    uniqueIds = jsonResponse?.userList?.map(user => user.user?.uniqueId) || [];
-                    if (uniqueIds.length > 0) {
+                    const uniqueIds = jsonResponse?.userList?.map(user => user.user?.uniqueId);
+                    if (uniqueIds && uniqueIds.length > 0) {
                         console.log(`Unique IDs capturados:`, uniqueIds);
-
-                        // Seleciona um uniqueId aleatório
-                        const randomUniqueId = uniqueIds[Math.floor(Math.random() * uniqueIds.length)];
-                        console.log(`Unique ID selecionado aleatoriamente: ${randomUniqueId}`);
-
-                        // Encerrar o navegador após encontrar um uniqueId
-                        await browser.close();
                         return;
                     } else {
                         console.log('Nenhum uniqueId encontrado na resposta.');
@@ -94,10 +88,8 @@ const __dirname = path.dirname(__filename);
         console.log(`Tentativa ${retryCount + 1} de capturar a resposta da API...`);
         await page.waitForTimeout(3000); // Aguardar 3 segundos antes de tentar novamente
 
-        // Se não capturar uniqueIds, tentar novamente
-        if (uniqueIds.length === 0) {
-            captureApiResponse(retryCount + 1);
-        }
+        // Tentar mais uma vez
+        captureApiResponse(retryCount + 1);
     }
 
     // Iniciar a captura da resposta da API
