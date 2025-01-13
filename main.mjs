@@ -49,31 +49,49 @@ const __dirname = path.dirname(__filename);
 
     const url = 'https://www.tiktok.com/@gkzx7_';
     console.log(`Acessando a URL: ${url}`);
-    await page.goto(url, { waitUntil: 'load', timeout: 60000 });
+    await page.goto(url, { waitUntil: 'domcontentloaded' });
 
     // Esperando até a página carregar
     await page.waitForSelector('body');
 
-    // Capturar a requisição da API que contém a lista de usuários
-    page.on('response', async response => {
-        const apiUrl = response.url();
-        if (apiUrl.includes('/api/user/list/')) {
-            console.log(`Resposta capturada da API: ${apiUrl}`);
-            try {
-                const jsonResponse = await response.json();
-                console.log(`Resposta completa da API:`, JSON.stringify(jsonResponse, null, 2));
-
-                // Captura todos os uniqueId dos usuários na resposta
-                const uniqueIds = jsonResponse?.userList?.map(user => user.user?.uniqueId);
-                if (uniqueIds && uniqueIds.length > 0) {
-                    console.log(`Unique IDs capturados:`, uniqueIds);
-                } else {
-                    console.log('Nenhum uniqueId encontrado na resposta.');
-                }
-            } catch (error) {
-                console.error('Erro ao processar a resposta da API:', error.message);
-            }
+    // Função para tentar capturar a resposta da API até 100 vezes
+    async function captureApiResponse(retryCount = 0) {
+        if (retryCount >= 100) {
+            console.log('Número máximo de tentativas atingido.');
+            return;
         }
-    });
 
+        // Capturar a requisição da API que contém a lista de usuários
+        page.on('response', async response => {
+            const apiUrl = response.url();
+            if (apiUrl.includes('/api/user/list/')) {
+                console.log(`Resposta capturada da API: ${apiUrl}`);
+                try {
+                    const jsonResponse = await response.json();
+                    console.log(`Resposta completa da API:`, JSON.stringify(jsonResponse, null, 2));
+
+                    // Captura todos os uniqueId dos usuários na resposta
+                    const uniqueIds = jsonResponse?.userList?.map(user => user.user?.uniqueId);
+                    if (uniqueIds && uniqueIds.length > 0) {
+                        console.log(`Unique IDs capturados:`, uniqueIds);
+                        return;
+                    } else {
+                        console.log('Nenhum uniqueId encontrado na resposta.');
+                    }
+                } catch (error) {
+                    console.error('Erro ao processar a resposta da API:', error.message);
+                }
+            }
+        });
+
+        // Aguardar um pouco antes de tentar novamente (se necessário)
+        console.log(`Tentativa ${retryCount + 1} de capturar a resposta da API...`);
+        await page.waitForTimeout(3000); // Aguardar 3 segundos antes de tentar novamente
+
+        // Tentar mais uma vez
+        captureApiResponse(retryCount + 1);
+    }
+
+    // Iniciar a captura da resposta da API
+    captureApiResponse();
 })();
