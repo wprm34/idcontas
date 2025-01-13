@@ -17,7 +17,7 @@ const __dirname = path.dirname(__filename);
     try {
         // Iniciar o navegador localmente, sem depuração remota
         browser = await chromium.launch({
-            headless: true, // Define como `true` se quiser rodar em modo headless
+            headless: false, // Define como `true` se quiser rodar em modo headless
         });
     } catch (error) {
         console.error('Erro ao iniciar o navegador:', error);
@@ -49,7 +49,7 @@ const __dirname = path.dirname(__filename);
 
     const url = 'https://www.tiktok.com/@gkzx7_';
     console.log(`Acessando a URL: ${url}`);
-    await page.goto(url, { waitUntil: 'domcontentloaded' });
+    await page.goto(url, { waitUntil: 'load', timeout: 60000 });
 
     // Esperando até a página carregar
     await page.waitForSelector('body');
