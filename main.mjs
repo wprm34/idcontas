@@ -22,16 +22,9 @@ const __dirname = path.dirname(__filename);
         return;
     }
 
-    // Simular localização e idioma do Brasil
     const context = await browser.newContext({
         viewport: null, // Remove o limite padrão de viewport
-        userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
-        locale: 'pt-BR',
-        geolocation: {
-            latitude: -14.2350, // Latitude do Brasil
-            longitude: -51.9253, // Longitude do Brasil
-        },
-        permissions: ['geolocation'], // Permitir acesso à geolocalização
+        userAgent: 'Mozilla/5.0 ...', // Substitua com o userAgent desejado
     });
 
     const page = await context.newPage();
@@ -54,19 +47,27 @@ const __dirname = path.dirname(__filename);
 
     const url = 'https://www.tiktok.com/@gkzx7_';
     console.log(`Acessando a URL: ${url}`);
-    await page.goto(url, { waitUntil: 'domcontentloaded' });
 
-    // Esperando até a página carregar
-    await page.waitForSelector('body');
-
-    // Função para capturar a resposta da API
+    // Função para tentar capturar a resposta da API até 100 vezes
     async function captureApiResponse(retryCount = 0) {
         if (retryCount >= 100) {
             console.log('Número máximo de tentativas atingido.');
+            await browser.close();
             return;
         }
 
+        console.log(`Tentativa ${retryCount + 1} de capturar a resposta da API...`);
+
+        // Atualizar a página
+        await page.goto(url, { waitUntil: 'domcontentloaded' });
+
+        // Esperar a página carregar completamente
+        await page.waitForSelector('body');
+
+        // Variável para armazenar os uniqueIds encontrados
         let uniqueIds = [];
+
+        // Capturar a requisição da API que contém a lista de usuários
         page.on('response', async response => {
             const apiUrl = response.url();
             if (apiUrl.includes('/api/user/list/')) {
@@ -96,16 +97,15 @@ const __dirname = path.dirname(__filename);
             }
         });
 
-        // Aguardar um pouco antes de tentar novamente (se necessário)
-        console.log(`Tentativa ${retryCount + 1} de capturar a resposta da API...`);
-        await page.waitForTimeout(3000); // Aguardar 3 segundos antes de tentar novamente
+        // Aguardar 3 segundos antes de tentar novamente
+        await page.waitForTimeout(3000);
 
         // Se não capturar uniqueIds, tentar novamente
         if (uniqueIds.length === 0) {
-            captureApiResponse(retryCount + 1);
+            await captureApiResponse(retryCount + 1);
         }
     }
 
     // Iniciar a captura da resposta da API
-    captureApiResponse();
+    await captureApiResponse();
 })();
